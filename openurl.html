@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>请使用浏览器打开</title>
+    <link rel="shortcut icon" type="image/x-icon" href="./logo-200x200.png">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;justify-content: ;
+            margin: 0;
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4e8f0 100%);
+            font-family: 'PingFang SC', 'Helvetica Neue', Arial, sans-serif;
+            color: #333;
+            padding: 20px;
+        }
+        
+        .container {
+            background-color: #fff;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #2466f4, #3b82f6);
+        }
+        
+        #title {
+            font-size: 22px;
+            font-weight: bold;
+            color: #03081A;
+            margin-bottom: 10px;
+        }
+        
+        #message {
+            font-size: 16px;
+            line-height: 1.6;
+            margin: 15px 0;
+            color: #878B99;
+        }
+        
+        .browser-hint {
+            background-color: #f8f9fa;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 20px 0;
+            text-align: left;
+        }
+        
+        .browser-hint p {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 10px;
+        }
+        
+        .browser-hint ol {
+            padding-left: 20px;
+            font-size: 14px;
+            color: #666;
+        }
+        
+        .browser-hint li {
+            margin-bottom: 8px;
+            line-height: 1.4;
+        }
+        
+        .buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-top: 20px;
+        }
+        
+        #copy {
+            display: block;
+            width: 100%;
+            height: 48px;
+            line-height: 48px;
+            text-align: center;
+            font-size: 16px;
+            font-weight: 500;
+            color: #fff;
+            background-color: #2466f4;
+            border-radius: 24px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 10px rgba(36, 102, 244, 0.3);
+        }
+        
+        #copy:hover {
+            background-color: #1d59d1;
+            transform: translateY(-2px);
+        }
+        
+        #copy:active {
+            transform: translateY(0);
+        }
+        
+        #open {
+            display: block;
+            width: 100%;
+            height: 48px;
+            line-height: 48px;
+            text-align: center;
+            font-size: 16px;
+            font-weight: 500;
+            color: #2466f4;
+            background-color: transparent;
+            border-radius: 24px;
+            border: 1px solid #2466f4;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+        }
+        
+        #open:hover {
+            background-color: rgba(36, 102, 244, 0.05);
+        }
+        
+        .success-message {
+            display: none;
+            margin-top: 15px;
+            padding: 10px;
+            background-color: #f0f9ff;
+            border-radius: 8px;
+            color: #2466f4;
+            font-size: 14px;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        @media (max-width: 480px) {
+            .container {
+                padding: 25px 20px;
+            }
+            
+            #title {
+                font-size: 20px;
+            }
+            
+            #message {
+                font-size: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div id="title">提示</div>
+        <div id="message">微信或QQ内访问不可打开该房间，请复制链接后在手机浏览器中打开</div>
+        
+        <div class="browser-hint">
+            <p><strong>操作指引：</strong></p>
+            <ol>
+                <li>点击下方"复制链接"按钮</li>
+                <li>打开手机浏览器(如Safari、Chrome、via等)</li>
+                <li>在地址栏中粘贴并打开链接</li>
+            </ol>
+        </div>
+        
+        <div class="buttons">
+            <button id="copy" onclick = "复制文本(window.top.location.href)">点击复制链接</button>
+        
+        <div id="success-message" class="success-message">
+            链接已复制到剪贴板，请粘贴到浏览器中打开
+        </div>
+    </div>
+
+    <script>
+  function 复制文本(str) {
+  // 替换换行符为 HTML 的换行标签
+  const htmlStr = str.replace(/\n/g, '<br>');
+  // 创建一个新的元素节点来包含 HTML 内容
+  const div = document.createElement('div');
+  div.innerHTML = htmlStr;
+  document.body.appendChild(div);
+  // 创建一个范围对象
+  const range = document.createRange();
+  // 将新创建的元素节点添加到范围中
+  range.selectNode(div);
+  // 获取当前选择
+  const selection = window.getSelection();
+  // 移除之前选中内容
+  if (selection.rangeCount > 0) selection.removeAllRanges();
+  // 将范围添加到选择中
+  selection.addRange(range);
+  // 执行复制命令
+  document.execCommand('copy');
+  // 移除范围，清空选择
+  selection.removeAllRanges();
+  div.remove();
+  mdui_snackbar( {
+    message: "已尝试复制，如未复制成功请检查是否已允许网站使用剪贴板",
+    action: "确定",
+    onActionClick: () => console.log("click action button")
+  });
+}
+    </script>
+</body>
+</html>

@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>星凌自定义 - 友情链接</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f7fa;
+            color: #333;
+            line-height: 1.6;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+        
+        .subtitle {
+            font-size: 1.1rem;
+            color: #7f8c8d;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        
+        .search-box {
+            flex: 1;
+            min-width: 250px;
+            position: relative;
+        }
+        
+        .search-box input {
+            width: 100%;
+            padding: 12px 20px;
+            border: 1px solid #ddd;
+            border-radius: 30px;
+            font-size: 1rem;
+            outline: none;
+            transition: all 0.3s;
+        }
+        
+        .search-box input:focus {
+            border-color: #3498db;
+            box-shadow: 0 0 10px rgba(52, 152, 219, 0.2);
+        }
+        
+        .categories {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        
+        .category-btn {
+            padding: 8px 16px;
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .category-btn:hover, .category-btn.active {
+            background: #3498db;
+            color: white;
+            border-color: #3498db;
+        }
+        
+        .links-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 25px;
+        }
+        
+        .link-card {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s, box-shadow 0.3s;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .link-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+        
+        .card-header {
+            padding: 20px;
+            background: #f8f9fa;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .card-body {
+            padding: 20px;
+            flex-grow: 1;
+        }
+        
+        .site-name {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 5px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .site-url {
+            color: #3498db;
+            font-size: 0.9rem;
+            margin-bottom: 15px;
+            word-break: break-all;
+        }
+        
+        .site-desc {
+            color: #7f8c8d;
+            margin-bottom: 15px;
+            line-height: 1.5;
+        }
+        
+        .site-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+            margin-top: 10px;
+        }
+        
+        .tag {
+            padding: 3px 8px;
+            background: #f1f8ff;
+            color: #3498db;
+            border-radius: 4px;
+            font-size: 0.8rem;
+        }
+        
+        .visit-btn {
+            display: inline-block;
+            padding: 8px 16px;
+            background: #3498db;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            font-weight: 500;
+            transition: background 0.3s;
+        }
+        
+        .visit-btn:hover {
+            background: #2980b9;
+        }
+        
+        footer {
+            text-align: center;
+            margin-top: 50px;
+            padding: 20px;
+            color: #7f8c8d;
+            border-top: 1px solid #eee;
+        }
+        
+        @media (max-width: 768px) {
+            .controls {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .categories {
+                justify-content: center;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>友情链接</h1>
+            <p class="subtitle">感谢以下优秀的网站与我们的合作，共同分享知识与资源</p>
+        </header>
+        
+        <div class="controls">
+            <div class="search-box">
+                <input type="text" placeholder="搜索网站名称或描述...">
+            </div>
+            
+            <div class="categories">
+                           </div>
+        </div>
+        
+            <div class="link-card">
+                <div class="card-header">
+                    <div class="site-name">暂无</div>
+                    <div class="site-url">null</div>
+                </div>
+                <div class="card-body">
+                    <p class="site-desc">null</p>
+                    <div class="site-tags">
+                        <span class="tag">null</span>
+                        <span class="tag">null</span>
+                    </div>
+                    <a href="/" class="visit-btn">访问网站</a>
+                </div>
+            </div>
+        </div>
+        
+       
+    <script>
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            const categoryBtns = document.querySelectorAll('.category-btn');
+            const linkCards = document.querySelectorAll('.link-card');
+            
+            categoryBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    // 移除所有按钮的active类
+                    categoryBtns.forEach(b => b.classList.remove('active'));
+                    // 为当前点击的按钮添加active类
+                    this.classList.add('active');
+                    
+                    const category = this.textContent.trim();
+                    
+                    // 筛选卡片
+                    linkCards.forEach(card => {
+                        if (category === '全部') {
+                            card.style.display = 'flex';
+                        } else {
+                            const tags = card.querySelectorAll('.tag');
+                            let hasCategory = false;
+                            
+                            tags.forEach(tag => {
+                                if (tag.textContent === category) {
+                                    hasCategory = true;
+                                }
+                            });
+                            
+                            card.style.display = hasCategory ? 'flex' : 'none';
+                        }
+                    });
+                });
+            });
+            
+            // 搜索功能
+            const searchInput = document.querySelector('.search-box input');
+            
+            searchInput.addEventListener('input', function() {
+                const searchText = this.value.toLowerCase();
+                
+                linkCards.forEach(card => {
+                    const siteName = card.querySelector('.site-name').textContent.toLowerCase();
+                    const siteDesc = card.querySelector('.site-desc').textContent.toLowerCase();
+                    
+                    if (siteName.includes(searchText) || siteDesc.includes(searchText)) {
+                        card.style.display = 'flex';
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>404 - 页面不存在</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --md-sys-color-primary: #6750A4;
+            --md-sys-color-primary-hover: #52388D;
+            --md-sys-color-primary-active: #463379;
+            --md-sys-color-on-primary: #fff;
+            --md-sys-color-surface: #fff;
+            --md-sys-color-on-surface: #1E1C24;
+            --md-sys-color-error: #BA1A1A;
+            --md-sys-color-on-error: #fff;
+            --md-sys-color-background: #F4EFF4;
+            --md-sys-color-on-background: #1E1C24;
+            --md-sys-color-inverse-on-surface: #fff;
+            --md-sys-color-inverse-surface: #313033;
+            --md-sys-elevation-1: 0px 2px 4px rgba(0, 0, 0, 0.1), 0px 4px 12px rgba(0, 0, 0, 0.08);
+            --md-sys-elevation-2: 0px 4px 8px rgba(0, 0, 0, 0.15);
+            --md-sys-elevation-3: 0px 6px 16px rgba(0, 0, 0, 0.2);
+            --md-sys-shape-corner-extra-large: 2rem;
+            --md-sys-shape-corner-medium: 1rem;
+            --md-sys-transition-duration: 0.3s;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: var(--md-sys-color-background);
+            color: var(--md-sys-color-on-background);
+            font-family: 'Noto Sans SC', 'Roboto', sans-serif;
+            font-size: 1rem;
+            line-height: 1.6;
+            padding: 1rem;
+        }
+
+        .container {
+            text-align: center;
+            padding: 3rem 2rem;
+            border-radius: var(--md-sys-shape-corner-extra-large);
+            background-color: var(--md-sys-color-surface);
+            box-shadow: var(--md-sys-elevation-1);
+            max-width: 480px;
+            width: 100%;
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        h1 {
+            color: var(--md-sys-color-primary);
+            margin-bottom: 1.5rem;
+            font-size: 2.5rem;
+            font-weight: 700;
+        }
+
+        p {
+            margin-bottom: 2rem;
+            color: var(--md-sys-color-on-surface);
+            font-size: 1.1rem;
+            max-width: 80%;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .error-illustration {
+            width: 180px;
+            height: 100px;
+            margin: 0 auto 2rem;
+            display: block;
+            animation: bounce 2s infinite;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.75em 1.5em;
+            border: none;
+            border-radius: var(--md-sys-shape-corner-medium);
+            background-color: var(--md-sys-color-primary);
+            color: var(--md-sys-color-on-primary);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all var(--md-sys-transition-duration) ease;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            min-width: 120px;
+        }
+
+        .button.secondary {
+            background-color: transparent;
+            color: var(--md-sys-color-primary);
+            border: 1px solid var(--md-sys-color-primary);
+        }
+
+        .button:hover,
+        .button:focus {
+            background-color: var(--md-sys-color-primary-hover);
+            box-shadow: var(--md-sys-elevation-2);
+            transform: translateY(-2px);
+            color: var(--md-sys-color-on-primary);
+        }
+
+        .button.secondary:hover,
+        .button.secondary:focus {
+            background-color: rgba(103, 80, 164, 0.08);
+        }
+
+        .button:active {
+            background-color: var(--md-sys-color-primary-active);
+            box-shadow: inset 0px 2px 4px rgba(0, 0, 0, 0.2);
+            transform: translateY(0);
+        }
+
+        .search-box {
+            margin: 2rem auto;
+            max-width: 80%;
+            position: relative;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 0.75em 1.5em;
+            border-radius: var(--md-sys-shape-corner-medium);
+            border: 1px solid #ddd;
+            font-family: inherit;
+            font-size: 1rem;
+            transition: all var(--md-sys-transition-duration) ease;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: var(--md-sys-color-primary);
+            box-shadow: 0 0 0 2px rgba(103, 80, 164, 0.2);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 2rem 1.5rem;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .error-illustration {
+                width: 140px;
+                margin-bottom: 1.5rem;
+            }
+
+            .button-group {
+                flex-direction: column;
+                width: 100%;
+            }
+
+            .button {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <svg class="error-illustration" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 8V12M12 16H12.01M22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12Z" stroke="#D83838" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <h1>404 - 页面不存在</h1>
+        <h3 style="color: red">404 Not Found</h3>
+        <p>抱歉，我们无法找到您要访问的页面</p>
+        <h4>可能原因：</h4>
+        <ui>
+        <li>
+        页面已被删除
+        </li>
+        <li>
+        资源已不存在
+       </li>
+       <li>
+       其他可能原因
+       </li>
+        </ui>
+        <div class="button-group">
+            <a href="/" class="button">返回首页</a>
+        </div>
+    </div>
+</body>
+</html>
