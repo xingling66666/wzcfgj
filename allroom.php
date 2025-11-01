@@ -20,16 +20,31 @@ if (!file_exists(STORAGE_DIR)) {
 $currentPage = isset($_GET['page']) ? max(1, intval($_GET['page'])) : 1;
 $offset = ($currentPage - 1) * ITEMS_PER_PAGE;
 
-// 获取并排序房间文件
+// 获取并排序所有房间文件
 $roomFiles = glob(STORAGE_DIR . '*.json');
 usort($roomFiles, function($a, $b) {
     return filemtime($b) - filemtime($a);
 });
 
-// 分页处理
-$totalRooms = count($roomFiles);
+// 计算有效房间数量
+$validRoomCount = 0;
+$allRoomFiles = [];
+foreach ($roomFiles as $file) {
+    $roomData = json_decode(file_get_contents($file), true);
+    if (json_last_error() !== JSON_ERROR_NONE) continue;
+    
+    // 检查房间是否过期
+    $isActive = (time() < $roomData['expires_at']);
+    if ($isActive) {
+        $validRoomCount++;
+    }
+    $allRoomFiles[] = $file;
+}
+
+// 分页处理（基于所有房间）
+$totalRooms = count($allRoomFiles);
 $totalPages = ceil($totalRooms / ITEMS_PER_PAGE);
-$paginatedFiles = array_slice($roomFiles, $offset, ITEMS_PER_PAGE);
+$paginatedFiles = array_slice($allRoomFiles, $offset, ITEMS_PER_PAGE);
 
 // 处理房间数据
 $rooms = [];
@@ -39,13 +54,14 @@ foreach ($paginatedFiles as $file) {
     
     $roomId = basename($file, '.json');
     $expiresIn = ceil(($roomData['expires_at'] - time()) / 3600); // 剩余小时数
+    $isActive = $expiresIn > 0;
     
     $rooms[] = [
         'id' => $roomId,
         'created_at' => date('Y-m-d H:i:s', $roomData['created_at']),
-        'expires_in' => $expiresIn > 0 ? $expiresIn . '小时' : '已过期',
+        'expires_in' => $isActive ? $expiresIn . '小时' : '已过期',
         'share_url' => (isset($_SERVER['HTTPS']) ? 'https://' : 'http://') . $_SERVER['HTTP_HOST'] . "/room.php?id={$roomId}",
-        'is_active' => $expiresIn > 0
+        'is_active' => $isActive
     ];
 }
 ?>
@@ -84,9 +100,14 @@ foreach ($paginatedFiles as $file) {
             <h1 class="text-3xl font-bold text-gray-800">
             房间列表
             </h1>
-            <span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm">
-                共 <?php echo $totalRooms; ?> 个房间
-            </span>
+            <div class="flex items-center space-x-4">
+                <span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm">
+                    共 <?php echo $totalRooms; ?> 个房间
+                </span>
+                <span class="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm">
+                    <?php echo $validRoomCount; ?> 个有效
+                </span>
+            </div>
         </div>
 
         <?php if ($totalRooms === 0): ?>
@@ -130,7 +151,7 @@ foreach ($paginatedFiles as $file) {
                             <div class="flex justify-between items-center pt-4 border-t border-gray-100">
                                 <a href="<?php echo htmlspecialchars($room['share_url']); ?>" 
                                    target="_blank"
-                                   class="text-blue-600 hover:text-blue-800 text-sm font-medium flex items-center">
+                                   class="text-blue-600 hover:text-blue-800 text-sm font-medium flex items-center <?php echo !$room['is_active'] ? 'pointer-events-none text-gray-400' : ''; ?>">
                                     <i class="fas fa-external-link-alt mr-2"></i>访问房间
                                 </a>
                                 <button onclick="copyToClipboard('<?php echo $room['share_url']; ?>')"

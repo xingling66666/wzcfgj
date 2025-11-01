@@ -1,12 +1,12 @@
 window.onload = function() {
   document.querySelector("mdui-layout-main").querySelector("mdui-card").style.visibility = "unset";
   const title = document.getElementById("title")
-  title.outerHTML = "<mdui-top-app-bar-title style='line-height: 1.0'>星凌王者创房工具 <span onclick= '更新内容()' >[更新内容]</span><br><span style='font-size: 0.6em;'>v1.7.5</span></mdui-top-app-bar-title>";
+  title.outerHTML = "<mdui-top-app-bar-title style='line-height: 1.0'>星凌王者创房工具 <span onclick= '更新内容()' >[更新内容]</span><br><span style='font-size: 0.6em;'>v1.7.6</span></mdui-top-app-bar-title>";
 }
 if (typeof mydatajson === "undefined") {
   mdui.alert({
     headline: "提示",
-    description: "错误！地图模式及英雄列表未成功加载！",
+    description: "错误！地图模式及英雄列表未成功加载！点击确定将重试",
     confirmText: "确定"
   });
 }
@@ -67,7 +67,7 @@ function 暗号验证() {
     });
   });
 }
-if(localStorage.getItem("已验证") !== "true" && 暗号验证开关 === "开" ) {
+if(localStorage.getItem("已验证") !== "true" && 暗号验证开关 === "开") {
   暗号验证();
 }
 
@@ -79,7 +79,7 @@ function 更新内容(判断是否为自动调用) {
     判断是否可关闭 = true;
     秒后可关闭 = "";
   }
-  let time = 判断是否为自动调用 ? 3: ""; // 自动调用时5秒，手动调用时为空字符串
+  let time = 判断是否为自动调用 ? 3: ""; // 自动调用时3秒，手动调用时为空字符串
   // 创建对话框内容
   const dialogContent = `
   <div style="max-height: 60vh; overflow-y: auto; padding: 0 8px;">
@@ -88,15 +88,15 @@ function 更新内容(判断是否为自动调用) {
   <mdui-icon-announcement slot="start"></mdui-icon-announcement>
   <div style="line-height: 1.6;">
   <div style="font-weight: 500; color: var(--mdui-color-primary);">
-  <h3 style="margin: 0 0 8px 0; color: var(--mdui-color-primary);">1.7.5版本更新</h3>
+  <h3 style="margin: 0 0 8px 0; color: var(--mdui-color-primary);">1.7.6版本更新</h3>
   <ul style="margin: 0; padding-left: 20px;">
-  <li style="margin-bottom: 6px;">新增房间列表</li>
-  <li style="margin-bottom: 6px;">修复了快捷玩法功能中二维码不显示的问题</li>
+  <li style="margin-bottom: 6px;">修复了娱乐模式开房间加入失败的问题</li>
+  <li style="margin-bottom: 6px;">进房页面新增选择位置进入房间功能</li>
   </ul>
   <p>星凌王者创房工具</p>
   </div>
   <div style="font-size: 0.875rem; color: var(--mdui-color-on-surface-variant); margin-top: 8px;">
-  更新时间：2025/10/24
+  更新时间：2025/11/1
   <p id='miaoshu'>${time}${秒后可关闭}</p>
   </div>
   </div>
@@ -127,7 +127,7 @@ function 更新内容(判断是否为自动调用) {
         if (!判断是否可关闭) {
           return false; // 阻止关闭
         }
-        localStorage.setItem('v1.7.5更新内容被查看', 'true');
+        localStorage.setItem('v1.7.6更新内容被查看', 'true');
         return true; // 允许关闭
       }
     },
@@ -159,7 +159,7 @@ function 更新内容(判断是否为自动调用) {
       if (time <= 0) {
         判断是否可关闭 = true;
         if (miaoshu) {
-          miaoshu.innerHTML = "现在可以关闭了";
+          miaoshu.innerHTML = "您现在可以关闭了";
         }
         clearInterval(timer); // 清除定时器
       }
@@ -168,7 +168,7 @@ function 更新内容(判断是否为自动调用) {
   }
 }
 // 只在未查看过更新内容时显示
-if (localStorage.getItem('v1.7.5更新内容被查看') !== 'true') {
+if (localStorage.getItem('v1.7.6更新内容被查看') !== 'true') {
   更新内容(true);
 }
 const tip1 = "没有配置 请先新建配置"
@@ -293,7 +293,6 @@ function getRandomElements(arr, n) {
   return arr.slice(0, n);
 }
 let customRoomConfig = null;
-
 function 生成链接(func) {
   var mode = document.getElementsByTagName("mdui-segmented-button-group")[0].value;
   var url;
@@ -436,97 +435,6 @@ function 生成链接(func) {
       if (checkGameMode(mapname, mode)) {
         return;
       }
-
-      // 处理普通房间
-      if (mapname.includes("普通房间")) {
-        alljson = {
-          "createType": "2",
-          "mapID": mapid[0],
-          "ullRoomid": "待填入roomid",
-          "mapType": mapid[1],
-          "ullExternUid": "待填入roomid",
-          "roomName": "1",
-          "platType": "4",
-          "campid": alljson.campid || 1,
-          // 保留之前的阵营设置
-          "AddPos": 判断位置,
-          "AddType": "2"
-        };
-        window.myheros = "无";
-
-        var Rand = Math.random();
-        var mineId = Math.round(Rand * 1000000000000000000);
-        alljson.ullExternUid = mineId;
-        alljson.ullRoomid = mineId;
-
-        var alljson_str = JSON.stringify(alljson);
-        var openurl = url + btoa(alljson_str);
-
-        if (func) {
-          func(openurl, "确认启动游戏？");
-          return;
-        }
-
-        mdui.confirm({
-          headline: "提示",
-          description: "确认启动游戏？",
-          confirmText: "继续",
-          cancelText: "取消",
-          onConfirm: () => {
-            window.openurl = openurl;
-            打开链接(openurl);
-          },
-          onCancel: () => console.log("canceled"),
-        });
-        return;
-      }
-
-      // 处理不可自定义地图
-      if (mapname.includes("不可自定义")) {
-        var myalljson = {
-          "createType": "2",
-          "mapID": mapid[0],
-          "ullRoomid": "待填入roomid",
-          "mapType": mapid[1],
-          "ullExternUid": "待填入roomid",
-          "roomName": "1",
-          "platType": "4",
-          "campid": alljson.campid || 1,
-          // 保留之前的阵营设置
-          "AddPos": 判断位置,
-          "AddType": "2"
-        };
-
-        var Rand = Math.random();
-        var mineId = Math.round(Rand * 1000000000000000000);
-        myalljson.ullExternUid = mineId;
-        myalljson.ullRoomid = mineId;
-
-        var alljson_str = JSON.stringify(myalljson);
-        var openurl = url + btoa(alljson_str);
-        var tiptext = "此地图仅提供开房间，不可无CD哦 确认启动游戏？";
-
-        window.myheros = "无";
-
-        if (func) {
-          func(openurl, tiptext);
-          return;
-        }
-
-        mdui.confirm({
-          headline: "提示",
-          description: tiptext,
-          confirmText: "继续",
-          cancelText: "取消",
-          onConfirm: () => {
-            window.openurl = openurl;
-            打开链接(openurl);
-          },
-          onCancel: () => console.log("canceled"),
-        });
-        return;
-      }
-
       // 处理英雄选择
       var heros = edittab[1].value.replace(/\s+/g, "");
       var oheros;
@@ -663,6 +571,7 @@ function 生成链接(func) {
     }
   });
 }
+
 let 快捷玩法json
 
 function 快捷玩法(func) {
@@ -4888,12 +4797,7 @@ function 复制内容处理(url) {
     }
     if (文本输入框) {
       if (!文本输入框.value.includes("{链接}")) {
-        mdui.alert({
-          headline: "提示",
-          description: "错误！输入框内必须包含{链接}变量",
-          confirm: "确定"
-        });
-        return 文本输入框.value;
+        return url
       }
       return 替换所有变量(文本输入框.value);
     }
@@ -4904,377 +4808,3 @@ function 复制内容处理(url) {
     return url;
   }
 }
-// 备份相关功能
-function 备份配置(type) {
-  mdui.prompt({
-    headline: "备份配置",
-    description: "请输入唯一标识符（建议使用容易记住的英文或数字）",
-    confirmText: "备份",
-    cancelText: "取消",
-    onConfirm: async (uniqueId) => {
-      if (!uniqueId.trim()) {
-        mdui.alert("唯一标识符不能为空", "提示");
-        return;
-      }
-
-      try {
-        let configData = {};
-        if (type === 'hero') {
-          // 获取当前英雄配置
-          const editvalue = document.querySelectorAll(".myedit")[1].value;
-          const heros_json = JSON.parse(localStorage.getItem("custom_heros") || "{}");
-          if (heros_json[editvalue]) {
-            configData = {
-              type: 'hero',
-              name: editvalue,
-              data: heros_json[editvalue],
-              uniqueId: uniqueId
-            };
-          } else {
-            mdui.alert("请先选择要备份的配置", "提示");
-            return;
-          }
-        } else if (type === 'custom') {
-          // 获取当前自定义配置
-          const editvalue = document.querySelectorAll(".myedit")[2].value;
-          const custom_json = JSON.parse(localStorage.getItem("custom_cof") || "{}");
-          if (custom_json[editvalue]) {
-            configData = {
-              type: 'custom',
-              name: editvalue,
-              data: custom_json[editvalue],
-              uniqueId: uniqueId
-            };
-          } else {
-            mdui.alert("请先选择要备份的配置", "提示");
-            return;
-          }
-        }
-
-        // 发送备份请求到后端
-        const response = await fetch('/backup_config.php', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(configData)
-        });
-
-        const result = await response.json();
-
-        if (result.success) {
-          mdui.alert(`配置备份成功！\n唯一标识：${uniqueId}`, "备份成功");
-        } else {
-          mdui.alert(`备份失败：${result.message}`, "错误");
-        }
-      } catch (error) {
-        console.error('备份失败:', error);
-        mdui.alert("备份失败，请检查网络连接", "错误");
-      }
-    }
-  });
-}
-
-function 恢复配置(type) {
-  mdui.prompt({
-    headline: "恢复配置",
-    description: "请输入要恢复的配置唯一标识符",
-    confirmText: "恢复",
-    cancelText: "取消",
-    onConfirm: async (uniqueId) => {
-      if (!uniqueId.trim()) {
-        mdui.alert("唯一标识符不能为空", "提示");
-        return;
-      }
-
-      try {
-        // 发送恢复请求到后端
-        const response = await fetch('/restore_config.php', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            type: type,
-            uniqueId: uniqueId
-          })
-        });
-
-        const result = await response.json();
-
-        if (result.success) {
-          // 恢复配置到本地存储
-          if (type === 'hero') {
-            const heros_json = JSON.parse(localStorage.getItem("custom_heros") || "{}");
-            heros_json[result.data.name] = result.data.data;
-            localStorage.setItem("custom_heros", JSON.stringify(heros_json));
-
-            // 更新界面
-            document.querySelectorAll(".myedit")[1].value = result.data.name;
-            localStorage.setItem("banheros", result.data.name);
-            加载英雄配置();
-          } else if (type === 'custom') {
-            const custom_json = JSON.parse(localStorage.getItem("custom_cof") || "{}");
-            custom_json[result.data.name] = result.data.data;
-            localStorage.setItem("custom_cof", JSON.stringify(custom_json));
-
-            // 更新界面
-            document.querySelectorAll(".myedit")[2].value = result.data.name;
-            localStorage.setItem("customs", result.data.name);
-            加载自定义配置();
-          }
-
-          mdui.alert(`配置恢复成功！\n配置名称：${result.data.name}`, "恢复成功");
-        } else {
-          mdui.alert(`恢复失败：${result.message}`, "错误");
-        }
-      } catch (error) {
-        console.error('恢复失败:', error);
-        mdui.alert("恢复失败，请检查网络连接", "错误");
-      }
-    }
-  });
-}
-
-// 为备份按钮添加事件监听
-// 备份相关功能
-function 备份配置(type) {
-  mdui.prompt({
-    headline: "备份配置",
-    description: "请输入唯一标识符（建议使用容易记住的英文或数字）",
-    confirmText: "备份",
-    cancelText: "取消",
-    onConfirm: async (uniqueId) => {
-      if (!uniqueId.trim()) {
-        mdui.alert("唯一标识符不能为空", "提示");
-        return;
-      }
-
-      // 验证唯一标识符格式（只允许字母、数字、下划线）
-      if (!/^[a-zA-Z0-9_]+$/.test(uniqueId)) {
-        mdui.alert("唯一标识符只能包含字母、数字和下划线", "提示");
-        return;
-      }
-
-      try {
-        let configData = {};
-        let configName = "";
-
-        if (type === 'hero') {
-          // 获取当前英雄配置
-          const editvalue = document.querySelectorAll(".myedit")[1].value;
-          const heros_json = JSON.parse(localStorage.getItem("custom_heros") || "{}");
-          if (heros_json[editvalue]) {
-            configData = {
-              type: 'hero',
-              name: editvalue,
-              data: heros_json[editvalue],
-              timestamp: new Date().toISOString(),
-              version: '1.0'
-            };
-            configName = editvalue;
-          } else {
-            mdui.alert("请先选择要备份的配置", "提示");
-            return;
-          }
-        } else if (type === 'custom') {
-          // 获取当前自定义配置
-          const editvalue = document.querySelectorAll(".myedit")[2].value;
-          const custom_json = JSON.parse(localStorage.getItem("custom_cof") || "{}");
-          if (custom_json[editvalue]) {
-            configData = {
-              type: 'custom',
-              name: editvalue,
-              data: custom_json[editvalue],
-              timestamp: new Date().toISOString(),
-              version: '1.0'
-            };
-            configName = editvalue;
-          } else {
-            mdui.alert("请先选择要备份的配置", "提示");
-            return;
-          }
-        }
-
-        // 创建FormData发送数据
-        const formData = new FormData();
-        formData.append('uniqueId', uniqueId);
-        formData.append('type', type);
-        formData.append('configData', JSON.stringify(configData));
-
-        // 发送备份请求到后端
-        const response = await fetch('/backup_config.php', {
-          method: 'POST',
-          body: formData
-        });
-
-        const result = await response.json();
-
-        if (result.success) {
-          mdui.alert(`配置备份成功！\n配置名称：${configName}\n唯一标识：${uniqueId}`, "备份成功");
-        } else {
-          mdui.alert(`备份失败：${result.message}`, "错误");
-        }
-      } catch (error) {
-        console.error('备份失败:', error);
-        mdui.alert("备份失败，请检查网络连接", "错误");
-      }
-    }
-  });
-}
-
-function 恢复配置(type) {
-  mdui.prompt({
-    headline: "恢复配置",
-    description: "请输入要恢复的配置唯一标识符",
-    confirmText: "恢复",
-    cancelText: "取消",
-    onConfirm: async (uniqueId) => {
-      if (!uniqueId.trim()) {
-        mdui.alert("唯一标识符不能为空", "提示");
-        return;
-      }
-
-      try {
-        // 发送恢复请求到后端
-        const formData = new FormData();
-        formData.append('uniqueId', uniqueId);
-        formData.append('type', type);
-
-        const response = await fetch('/restore_config.php', {
-          method: 'POST',
-          body: formData
-        });
-
-        const result = await response.json();
-
-        if (result.success) {
-          // 恢复配置到本地存储
-          const configData = result.data;
-
-          if (type === 'hero') {
-            const heros_json = JSON.parse(localStorage.getItem("custom_heros") || "{}");
-            heros_json[configData.name] = configData.data;
-            localStorage.setItem("custom_heros", JSON.stringify(heros_json));
-
-            // 更新界面
-            document.querySelectorAll(".myedit")[1].value = configData.name;
-            localStorage.setItem("banheros", configData.name);
-            加载英雄配置();
-          } else if (type === 'custom') {
-            const custom_json = JSON.parse(localStorage.getItem("custom_cof") || "{}");
-            custom_json[configData.name] = configData.data;
-            localStorage.setItem("custom_cof", JSON.stringify(custom_json));
-
-            // 更新界面
-            document.querySelectorAll(".myedit")[2].value = configData.name;
-            localStorage.setItem("customs", configData.name);
-            加载自定义配置();
-          }
-
-          mdui.alert(`配置恢复成功！\n配置名称：${configData.name}`, "恢复成功");
-        } else {
-          mdui.alert(`恢复失败：${result.message}`, "错误");
-        }
-      } catch (error) {
-        console.error('恢复失败:', error);
-        mdui.alert("恢复失败，请检查网络连接", "错误");
-      }
-    }
-  });
-}
-
-// 为备份按钮添加事件监听
-function 初始化备份功能() {
-  // 等待DOM完全加载后再执行
-  setTimeout(() => {
-    // 禁用英雄配置的备份按钮
-    const heroBackupBtn = document.createElement('mdui-button');
-    heroBackupBtn.setAttribute('variant', 'filled');
-    heroBackupBtn.setAttribute('class', 'herobutton');
-    heroBackupBtn.setAttribute('icon', 'cloud_upload');
-    heroBackupBtn.textContent = '备份配置';
-    heroBackupBtn.onclick = () => 备份配置('hero');
-
-    const heroRestoreBtn = document.createElement('mdui-button');
-    heroRestoreBtn.setAttribute('variant', 'filled');
-    heroRestoreBtn.setAttribute('class', 'herobutton');
-    heroRestoreBtn.setAttribute('icon', 'cloud_download');
-    heroRestoreBtn.textContent = '恢复配置';
-    heroRestoreBtn.onclick = () => 恢复配置('hero');
-
-    // 插入到英雄配置按钮区域 - 使用更准确的选择器
-    const heroButtonContainer = document.querySelector('.example-dialog .mydiv');
-    if (heroButtonContainer) {
-      heroButtonContainer.appendChild(heroBackupBtn);
-      heroButtonContainer.appendChild(heroRestoreBtn);
-      console.log('英雄配置备份按钮已添加');
-    } else {
-      console.warn('未找到英雄配置按钮容器');
-    }
-
-    // 自定义配置的备份按钮
-    const customBackupBtn = document.createElement('mdui-button');
-    customBackupBtn.setAttribute('variant', 'filled');
-    customBackupBtn.setAttribute('class', 'custombutton');
-    customBackupBtn.setAttribute('icon', 'cloud_upload');
-    customBackupBtn.textContent = '备份配置';
-    customBackupBtn.onclick = () => 备份配置('custom');
-
-    const customRestoreBtn = document.createElement('mdui-button');
-    customRestoreBtn.setAttribute('variant', 'filled');
-    customRestoreBtn.setAttribute('class', 'custombutton');
-    customRestoreBtn.setAttribute('icon', 'cloud_download');
-    customRestoreBtn.textContent = '恢复配置';
-    customRestoreBtn.onclick = () => 恢复配置('custom');
-
-    // 插入到自定义配置按钮区域
-    const customButtonContainer = document.querySelector('.custom-dialog .mydiv');
-    if (customButtonContainer) {
-      customButtonContainer.appendChild(customBackupBtn);
-      customButtonContainer.appendChild(customRestoreBtn);
-      console.log('自定义配置备份按钮已添加');
-    } else {
-      console.warn('未找到自定义配置按钮容器');
-    }
-  },
-    100);
-}
-
-// 在页面加载完成后初始化
-document.addEventListener('DOMContentLoaded', 初始化备份功能);
-
-// 如果对话框是动态加载的，还需要监听对话框打开事件
-document.addEventListener('DOMContentLoaded', function() {
-  // 监听英雄配置对话框打开
-  const heroDialog = document.querySelector('.example-dialog');
-  if (heroDialog) {
-    heroDialog.addEventListener('open', function() {
-      // 确保备份按钮存在
-      setTimeout(() => {
-        const heroContainer = this.querySelector('.mydiv');
-        const existingBackupBtn = heroContainer.querySelector('mdui-button[icon="cloud_upload"]');
-        if (!existingBackupBtn) {
-          初始化备份功能();
-        }
-      },
-        50);
-    });
-  }
-
-  // 监听自定义配置对话框打开
-  const customDialog = document.querySelector('.custom-dialog');
-  if (customDialog) {
-    customDialog.addEventListener('open', function() {
-      // 确保备份按钮存在
-      setTimeout(() => {
-        const customContainer = this.querySelector('.mydiv');
-        const existingBackupBtn = customContainer.querySelector('mdui-button[icon="cloud_upload"]');
-        if (!existingBackupBtn) {
-          初始化备份功能();
-        }
-      },
-        50);
-    });
-  }
-});
